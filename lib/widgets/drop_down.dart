@@ -1,8 +1,10 @@
 import 'package:chatgpt_course/constants/constants.dart';
 import 'package:chatgpt_course/models/models_model.dart';
+import 'package:chatgpt_course/providers/models_provider.dart';
 import 'package:chatgpt_course/services/api_service.dart';
 import 'package:chatgpt_course/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ModelsDropDownWidget extends StatefulWidget {
   const ModelsDropDownWidget({super.key});
@@ -12,12 +14,14 @@ class ModelsDropDownWidget extends StatefulWidget {
 }
 
 class _ModelsDropDownWidgetState extends State<ModelsDropDownWidget> {
-  String currentsModel = "gpt-3.5-turbo-0301";
+  String? currentsModel;
 
   @override
   Widget build(BuildContext context) {
+    final modelsProvider = Provider.of<ModelsProvider>(context, listen: false);
+    currentsModel = modelsProvider.getCurrentModel;
     return FutureBuilder<List<ModelsModel>>(
-      future: ApiService.getModels(),
+      future: modelsProvider.getAllModels(),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return Center(
@@ -46,6 +50,7 @@ class _ModelsDropDownWidgetState extends State<ModelsDropDownWidget> {
                     setState(() {
                       currentsModel = value.toString();
                     });
+                    modelsProvider.setCurrentModel(value.toString());
                   },
                 ),
               );
