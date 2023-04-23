@@ -1,4 +1,5 @@
 import 'package:chatgpt_course/constants/constants.dart';
+import 'package:chatgpt_course/widgets/chat_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -57,7 +58,11 @@ class _ChatScreenState extends State<ChatScreen> {
               child: ListView.builder(
                 itemCount: 6,
                 itemBuilder: (context, index) {
-                  return const Text('Hello');
+                  return ChatWidget(
+                    msg: chatMessages[index]['msg'].toString(),
+                    chatIndex:
+                        int.parse(chatMessages[index]['chatIndex'].toString()),
+                  );
                 },
               ),
             ),
